@@ -10,7 +10,7 @@ const Admin = () => {
         <Box
           display="flex"
           position="relative"
-          sx={{ width: "99vh", height: "100vh", bgcolor: "grey" }}
+          sx={{ width: "100vw", height: "100vh", bgcolor: "grey" }}
         >
           <Box
             sx={{
