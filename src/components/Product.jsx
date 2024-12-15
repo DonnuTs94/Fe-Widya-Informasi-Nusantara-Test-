@@ -1,26 +1,37 @@
-import { Avatar, Box, Button, Typography } from "@mui/material"
+/* eslint-disable no-unused-vars */
+import { Avatar, Box, Button, IconButton, Typography } from "@mui/material"
 import { IoIosAddCircleOutline } from "react-icons/io"
 import axiosInstance from "../configs/api"
 import { useEffect, useState } from "react"
 import { DataGrid } from "@mui/x-data-grid"
+import { HiDotsVertical } from "react-icons/hi"
 
 const Product = () => {
   const [products, setProducts] = useState([])
+  // const [page, setPage] = useState(1)
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+  })
+  const [pageSize, setPageSize] = useState(null)
+  const [totalData, setTotalData] = useState(0)
 
   const getProductData = async () => {
     try {
-      const response = await axiosInstance.get("/product?page=1")
+      const response = await axiosInstance.get(
+        `/product?page=${paginationModel.page + 1}`
+      )
       setProducts(response.data.data)
-      console.log(response)
+      setPageSize(response.data.pageSize)
+      setTotalData(response.data.totalItems)
     } catch (err) {
       console.log(err)
     }
   }
 
   useEffect(() => {
+    // console.log("Fetching data for page:", page)
     getProductData()
-  }, [])
-
+  }, [paginationModel])
   const columns = [
     {
       field: "image",
@@ -36,37 +47,25 @@ const Product = () => {
       ),
     },
     { field: "name", headerName: "Name", flex: 1 },
-    // {
-    //   field: "status",
-    //   headerName: "Status",
-    //   width: 120,
-    //   renderCell: () => (
-    //     <Typography
-    //       variant="body2"
-    //       color="success.main"
-    //       sx={{ fontWeight: 600 }}
-    //     >
-    //       Active
-    //     </Typography>
-    //   ),
-    // },
     { field: "price", headerName: "Price", flex: 1 },
     { field: "quantity", headerName: "Quantity", flex: 1 },
     { field: "category", headerName: "Category", flex: 1 },
     { field: "createdAt", headerName: "Created at", flex: 1 },
-    //  {
-    //    field: "actions",
-    //    headerName: "",
-    //    width: 50,
-    //    sortable: false,
-    //    renderCell: (params) => (
-    //      <>
-    //        <IconButton onClick={(event) => handleMenuOpen(event, params.row)}>
-    //          <MoreVertIcon />
-    //        </IconButton>
-    //      </>
-    //    ),
-    //  },
+    {
+      field: "actions",
+      headerName: "",
+      width: 50,
+      sortable: false,
+      renderCell: (params) => (
+        <>
+          <IconButton
+          // onClick={(event) => handleMenuOpen(event, params.row)}
+          >
+            <HiDotsVertical />
+          </IconButton>
+        </>
+      ),
+    },
   ]
 
   return (
@@ -109,16 +108,15 @@ const Product = () => {
               Products
             </Typography>
           </Box>
-          <Box>
+          <Box sx={{ width: "100%", mt: "20px" }}>
             <DataGrid
               rows={products}
               columns={columns}
-              // pageSize={pageSize}
-              // rowCount={totalPages * pageSize}
+              pageSize={pageSize}
+              rowCount={totalData}
               paginationMode="server"
-              // onPageChange={(newPage) => setPage(newPage + 1)} // MUI's page is 0-indexed
-              // onPageSizeChange={(newSize) => setPageSize(newSize)}
-              autoHeight
+              onPaginationModelChange={setPaginationModel}
+              autoPageSize
             />
           </Box>
         </Box>
