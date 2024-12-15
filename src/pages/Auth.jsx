@@ -14,6 +14,7 @@ import { useCallback, useState } from "react"
 import { IoEnterOutline } from "react-icons/io5"
 import axiosInstance from "../configs/api"
 import Toast from "../components/Toast"
+import { useNavigate } from "react-router-dom"
 
 const Auth = () => {
   const [variant, setVariant] = useState("login")
@@ -25,6 +26,8 @@ const Auth = () => {
   const [openToast, setOpenToast] = useState(false)
   const [toastMessage, setToastMessage] = useState("")
   const [toastStatus, setToastStatus] = useState("")
+
+  const navigate = useNavigate()
 
   const toggleVariant = useCallback(() => {
     setVariant((currentVariant) =>
@@ -63,10 +66,7 @@ const Auth = () => {
       })
 
       localStorage.setItem("auth_token", response.data.token)
-
-      setToastMessage("Login successful!")
-      setToastStatus("success")
-      setOpenToast(true)
+      navigate("/admin")
     } catch (err) {
       setToastMessage("Login failed. Please try again.")
       setToastStatus("error")
