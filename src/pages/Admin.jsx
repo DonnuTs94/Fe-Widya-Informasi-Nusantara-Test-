@@ -6,12 +6,12 @@ import Footer from "../components/Footer"
 const Admin = () => {
   return (
     <>
-      <Box>
+      <Box sx={{ overflow: "hidden" }}>
         <Navbar />
         <Box
           display="flex"
           position="relative"
-          sx={{ width: "100vw", height: "100vh", bgcolor: "grey" }}
+          sx={{ width: "100vw", height: "100vh", bgcolor: "#EEECEE" }}
         >
           <Box
             sx={{

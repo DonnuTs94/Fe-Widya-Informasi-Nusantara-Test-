@@ -31,12 +31,13 @@ const DetailProductModal = ({ open, handleClose, product }) => {
             flexDirection: "row",
             alignItems: "center",
             gap: 10,
+            position: "relative",
           }}
         >
           <Box
             sx={{
               width: "100%",
-              maxWidth: "400px",
+              maxWidth: "auto",
               height: "500px",
               backgroundColor: "#f5f5f5",
               display: "flex",
@@ -54,7 +55,6 @@ const DetailProductModal = ({ open, handleClose, product }) => {
             />
           </Box>
 
-          {/* Product Details Box */}
           <Box
             sx={{
               display: "flex",
@@ -62,39 +62,52 @@ const DetailProductModal = ({ open, handleClose, product }) => {
               gap: 1,
               width: "100%",
               maxWidth: "600px",
-              height: "500px", // Match the height of the image box
-              overflow: "auto",
+              height: "500px",
+              position: "relative",
             }}
           >
             <Typography
               variant="h6"
-              sx={{ fontWeight: "bold", fontSize: "32px" }}
+              sx={{
+                fontWeight: "bold",
+                fontSize: "32px",
+                top: 60,
+                position: "relative",
+              }}
             >
               {product.name}
             </Typography>
-            <Typography
-              variant="body1"
-              sx={{ mt: 1, fontSize: "24px", fontWeight: "bold" }}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 3,
+                position: "relative",
+                top: 70,
+              }}
             >
-              ${product.price}
-            </Typography>
-            <Typography variant="body1" sx={{ fontSize: "16px" }}>
-              Category: {product.category}
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ mt: 1, color: "black", bgcolor: "transparent" }}
-            >
-              Description:
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: product.description,
-                }}
-              />
-            </Typography>
-            <Typography variant="body2" sx={{ color: "text.secondary", mt: 1 }}>
+              <Typography
+                variant="body1"
+                sx={{ mt: 1, fontSize: "24px", fontWeight: "bold" }}
+              >
+                $ {product.price}
+              </Typography>
+              <Typography variant="body1" sx={{ fontSize: "18px" }}>
+                {product.category}
+              </Typography>
+
+              <Typography>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: product.description,
+                  }}
+                />
+              </Typography>
+            </Box>
+
+            {/* <Typography variant="body2" sx={{ color: "text.secondary", mt: 1 }}>
               Created At: {new Date(product.createdAt).toLocaleDateString()}
-            </Typography>
+            </Typography> */}
           </Box>
         </Box>
       </DialogContent>

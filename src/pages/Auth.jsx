@@ -94,7 +94,7 @@ const Auth = () => {
         sx={{
           width: screen,
           height: "100vh",
-          bgcolor: "#25293c",
+          bgcolor: "#EEECEE",
           position: "relative",
         }}
       >
@@ -105,15 +105,15 @@ const Auth = () => {
             left: "25%",
             width: "50vw",
             height: "70vh",
-            bgcolor: "#2F3349",
+            bgcolor: "#FDFBFD",
             borderRadius: "10px",
           }}
         >
-          <Box sx={{ position: "relative", top: "5%" }}>
+          <Box sx={{ position: "relative", top: "15%" }}>
             <Box
               sx={{
                 textAlign: "center",
-                color: "white",
+                color: "black",
                 fontSize: "30px",
                 mb: "-5px",
               }}
@@ -123,7 +123,7 @@ const Auth = () => {
 
             <Typography
               sx={{
-                color: "white",
+                color: "black",
                 textAlign: "center",
                 fontSize: "30px",
                 fontWeight: "bold",
@@ -148,7 +148,7 @@ const Auth = () => {
               display: "flex",
               flexDirection: "column",
               mx: "8%",
-              top: "10%",
+              top: "20%",
               gap: "30px",
               position: "relative",
               alignItems: "center",
@@ -158,11 +158,11 @@ const Auth = () => {
               <>
                 <TextField
                   label="Email"
-                  style={{ color: "white" }}
+                  style={{ color: "black" }}
                   onChange={(e) => setEmail(e.target.value)}
                   sx={{
                     "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "white",
+                      borderColor: "black",
                     },
                     width: "50%",
                   }}
@@ -172,7 +172,7 @@ const Auth = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   sx={{
                     "& .MuiOutlinedInput-notchedOutline": {
-                      borderColor: "white",
+                      borderColor: "black",
                     },
                     width: "50%",
                   }}
@@ -181,6 +181,7 @@ const Auth = () => {
                   variant="contained"
                   onClick={handleLogin}
                   sx={{ height: "40px", width: "50%" }}
+                  onKeyPress={(e) => e.key === "Enter"}
                 >
                   Login
                 </Button>
@@ -196,12 +197,12 @@ const Auth = () => {
                   }}
                 >
                   <TextField
-                    label="email"
+                    label="Email"
                     type="email"
                     onChange={(e) => setEmail(e.target.value)}
                     sx={{
                       "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "white",
+                        borderColor: "black",
                       },
                       width: "auto",
                     }}
@@ -211,7 +212,7 @@ const Auth = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     sx={{
                       "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "white",
+                        borderColor: "black",
                       },
                       width: "auto",
                     }}
@@ -221,7 +222,7 @@ const Auth = () => {
                     onChange={(e) => setFirstName(e.target.value)}
                     sx={{
                       "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "white",
+                        borderColor: "black",
                       },
                       width: "auto",
                     }}
@@ -231,31 +232,32 @@ const Auth = () => {
                     onChange={(e) => setLastName(e.target.value)}
                     sx={{
                       "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "white",
+                        borderColor: "black",
                       },
                     }}
                   />
-                  <FormControl>
-                    <InputLabel>Gender</InputLabel>
-                    <Select
-                      label="Gender"
-                      onChange={(e) => setGender(e.target.value)}
-                      sx={{
-                        "& .MuiOutlinedInput-notchedOutline": {
-                          borderColor: "white",
-                        },
-                        width: "auto",
-                      }}
-                    >
-                      <MenuItem value="MALE">Male</MenuItem>
-                      <MenuItem value="FEMALE">Female</MenuItem>
-                    </Select>
-                  </FormControl>
                 </Box>
+                <FormControl sx={{ width: "53%" }}>
+                  <InputLabel>Gender</InputLabel>
+                  <Select
+                    label="Gender"
+                    onChange={(e) => setGender(e.target.value)}
+                    sx={{
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "black",
+                      },
+                      width: "auto",
+                    }}
+                  >
+                    <MenuItem value="MALE">Male</MenuItem>
+                    <MenuItem value="FEMALE">Female</MenuItem>
+                  </Select>
+                </FormControl>
                 <Button
                   variant="contained"
                   onClick={handleRegister}
-                  sx={{ height: "40px", width: "58%" }}
+                  sx={{ height: "50px", width: "53%" }}
+                  onKeyPress={(e) => e.key === "Enter"}
                 >
                   Sign Up
                 </Button>
@@ -267,7 +269,10 @@ const Auth = () => {
                 ? "Don't have an account?"
                 : "Already have an account?"}
 
-              <Link sx={{ ml: "8px" }} onClick={toggleVariant}>
+              <Link
+                sx={{ ml: "8px", cursor: "pointer" }}
+                onClick={toggleVariant}
+              >
                 {variant === "login" ? "Sign Up" : "Sign In"}
               </Link>
             </Typography>

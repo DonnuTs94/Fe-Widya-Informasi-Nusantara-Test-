@@ -3,12 +3,12 @@ import {
   Box,
   Button,
   IconButton,
+  InputBase,
   Menu,
   MenuItem,
   Typography,
 } from "@mui/material"
 import { IoIosAddCircleOutline } from "react-icons/io"
-import axiosInstance from "../configs/api"
 import { useEffect, useState } from "react"
 import { DataGrid } from "@mui/x-data-grid"
 import { HiDotsVertical } from "react-icons/hi"
@@ -17,15 +17,11 @@ import DetailProductModal from "./DetailProductModal"
 import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md"
 import DeleteConfirmationModal from "./DeleteConfirmationModal"
 import UpdateProductModal from "./updateProductModal"
+import { useDispatch, useSelector } from "react-redux"
+import { fetchProducts, setSearchQuery } from "../redux/productSlice"
+import { IoSearch } from "react-icons/io5"
 
 const Product = () => {
-  const [products, setProducts] = useState([])
-  const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 5,
-  })
-  const [pageSize, setPageSize] = useState(null)
-  const [totalData, setTotalData] = useState(0)
   const [openModal, setOpenModal] = useState(false)
   const [openDetailModal, setOpenDetailModal] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(null)
@@ -33,8 +29,17 @@ const Product = () => {
     useState(false)
   const [anchorEl, setAnchorEl] = useState(null)
   const [openEditProductModal, setOpenEditProductModal] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 8,
+  })
 
   const open = Boolean(anchorEl)
+  const dispatch = useDispatch()
+
+  const { products, totalItems, currentPage, searchQuery, isLoading } =
+    useSelector((state) => state.products)
 
   const handleOpenMenu = (event, product) => {
     setAnchorEl(event.currentTarget)
@@ -57,24 +62,24 @@ const Product = () => {
     setOpenModal(false)
   }
 
-  const getProductData = async () => {
-    try {
-      const response = await axiosInstance.get(
-        `/product?page=${paginationModel.page + 1}`
-      )
-      setProducts(response.data.data)
-      setPageSize(response.data.pageSize)
-      setTotalData(response.data.totalItems)
-    } catch (err) {
-      console.log(err)
-    }
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value)
+  }
+
+  const handleSearchSubmit = () => {
+    dispatch(setSearchQuery(searchTerm))
+    dispatch(fetchProducts({ searchQuery: searchTerm, page: 1, pageSize: 7 })) // Fetch products with search term
   }
 
   useEffect(() => {
-    getProductData()
-  }, [paginationModel])
-
-  // console.log(selectedProduct)
+    dispatch(
+      fetchProducts({
+        searchQuery,
+        page: paginationModel.page + 1,
+        pageSize: paginationModel.pageSize,
+      })
+    )
+  }, [dispatch, searchQuery, paginationModel])
 
   const columns = [
     {
@@ -95,7 +100,14 @@ const Product = () => {
     { field: "price", headerName: "Price", flex: 1 },
     { field: "quantity", headerName: "Quantity", flex: 1 },
     { field: "category", headerName: "Category", flex: 1 },
-    { field: "createdAt", headerName: "Created at", flex: 1 },
+    {
+      field: "createdAt",
+      headerName: "Created at",
+      flex: 1,
+      renderCell: (params) => {
+        return new Date(params.row.createdAt).toLocaleDateString()
+      },
+    },
     {
       field: "actions",
       headerName: "",
@@ -167,7 +179,7 @@ const Product = () => {
         >
           <Button
             variant="contained"
-            sx={{ color: "white", bgcolor: "green", gap: "10px" }}
+            sx={{ color: "white", gap: "10px", height: "40px" }}
             onClick={handleOpenModal}
           >
             <IoIosAddCircleOutline /> Add Product
@@ -182,29 +194,64 @@ const Product = () => {
             p: "20px",
           }}
         >
-          <Box>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography sx={{ fontWeight: "bold", fontSize: "24px" }}>
               Products
             </Typography>
+            <Box sx={{ position: "relative" }}>
+              <IconButton sx={{ left: "14%" }} onClick={handleSearchSubmit}>
+                <IoSearch fontSize="small" color="black" />
+              </IconButton>
+              <InputBase
+                value={searchTerm}
+                onChange={handleSearchChange}
+                onKeyPress={(e) => e.key === "Enter" && handleSearchSubmit()}
+                sx={{
+                  flex: 1,
+                  paddingY: "2px",
+                  paddingLeft: "28px",
+                  fontSize: "14px",
+                  height: "36px",
+                  color: "black",
+                  border: "1px solid black",
+                  borderRadius: "4px",
+                  "&::placeholder": {
+                    color: "black",
+                  },
+                }}
+                placeholder="Search products"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearchSubmit()
+                  }
+                }}
+              />
+            </Box>
           </Box>
           <Box sx={{ width: "100%", mt: "20px" }}>
             <DataGrid
               rows={products}
               columns={columns}
-              pageSize={pageSize}
-              rowCount={totalData}
+              pageSize={paginationModel.pageSize}
+              rowCount={totalItems}
               paginationMode="server"
-              onPaginationModelChange={setPaginationModel}
-              autoPageSize
+              paginationModel={paginationModel}
+              onPaginationModelChange={(model) => setPaginationModel(model)}
               onRowClick={handleRowClick}
+              loading={isLoading}
               disableSelectionOnClick
+              style={{
+                height: paginationModel.pageSize * 66,
+              }}
             />
           </Box>
         </Box>
         <CreateProductModal
           openModal={openModal}
           handleCloseModal={handleCloseModal}
-          refetch={getProductData}
+          refetch={() =>
+            dispatch(fetchProducts({ searchQuery, page: currentPage }))
+          }
         />
 
         <DetailProductModal
@@ -217,14 +264,18 @@ const Product = () => {
           open={openDeleteConfirmationModal}
           handleClose={() => setOpenDeleteConfirmationModal(false)}
           product={selectedProduct}
-          refetch={getProductData}
+          refetch={() =>
+            dispatch(fetchProducts({ searchQuery, page: currentPage }))
+          }
         />
 
         <UpdateProductModal
           open={openEditProductModal}
           handleClose={() => setOpenEditProductModal(false)}
           product={selectedProduct}
-          refetch={getProductData}
+          refetch={() =>
+            dispatch(fetchProducts({ searchQuery, page: currentPage }))
+          }
         />
       </Box>
     </>

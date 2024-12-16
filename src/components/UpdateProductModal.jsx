@@ -22,7 +22,6 @@ const UpdateProductModal = ({ open, handleClose, product, refetch }) => {
   const [price, setPrice] = useState("")
   const [quantity, setQuantity] = useState("")
   const [description, setDescription] = useState("")
-  // const [newImage, setNewImage] = useState(null)
 
   const inputFile = useRef()
 
