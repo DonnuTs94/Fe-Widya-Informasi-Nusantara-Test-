@@ -109,7 +109,7 @@ const Auth = () => {
             borderRadius: "10px",
           }}
         >
-          <Box sx={{ position: "relative", top: "15%" }}>
+          <Box sx={{ position: "relative", top: "13%" }}>
             <Box
               sx={{
                 textAlign: "center",
@@ -148,7 +148,7 @@ const Auth = () => {
               display: "flex",
               flexDirection: "column",
               mx: "8%",
-              top: "20%",
+              top: "18%",
               gap: "30px",
               position: "relative",
               alignItems: "center",
@@ -169,6 +169,7 @@ const Auth = () => {
                 />
                 <TextField
                   label="Password"
+                  type="password"
                   onChange={(e) => setPassword(e.target.value)}
                   sx={{
                     "& .MuiOutlinedInput-notchedOutline": {
@@ -204,17 +205,18 @@ const Auth = () => {
                       "& .MuiOutlinedInput-notchedOutline": {
                         borderColor: "black",
                       },
-                      width: "auto",
+                      width: "100%",
                     }}
                   />
                   <TextField
                     label="Password"
+                    type="password"
                     onChange={(e) => setPassword(e.target.value)}
                     sx={{
                       "& .MuiOutlinedInput-notchedOutline": {
                         borderColor: "black",
                       },
-                      width: "auto",
+                      width: "100%",
                     }}
                   />
                   <TextField
@@ -224,7 +226,7 @@ const Auth = () => {
                       "& .MuiOutlinedInput-notchedOutline": {
                         borderColor: "black",
                       },
-                      width: "auto",
+                      width: "100%",
                     }}
                   />
                   <TextField
@@ -234,33 +236,40 @@ const Auth = () => {
                       "& .MuiOutlinedInput-notchedOutline": {
                         borderColor: "black",
                       },
+                      width: "100%",
                     }}
                   />
-                </Box>
-                <FormControl sx={{ width: "53%" }}>
-                  <InputLabel>Gender</InputLabel>
-                  <Select
-                    label="Gender"
-                    onChange={(e) => setGender(e.target.value)}
+
+                  <FormControl sx={{ gridColumn: "span 2", width: "100%" }}>
+                    <InputLabel>Gender</InputLabel>
+                    <Select
+                      label="Gender"
+                      onChange={(e) => setGender(e.target.value)}
+                      sx={{
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "black",
+                        },
+                        width: "100%",
+                      }}
+                    >
+                      <MenuItem value="MALE">Male</MenuItem>
+                      <MenuItem value="FEMALE">Female</MenuItem>
+                    </Select>
+                  </FormControl>
+
+                  {/* Sign Up Button */}
+                  <Button
+                    variant="contained"
+                    onClick={handleRegister}
                     sx={{
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "black",
-                      },
-                      width: "auto",
+                      height: "50px",
+                      width: "100%",
+                      gridColumn: "span 2",
                     }}
                   >
-                    <MenuItem value="MALE">Male</MenuItem>
-                    <MenuItem value="FEMALE">Female</MenuItem>
-                  </Select>
-                </FormControl>
-                <Button
-                  variant="contained"
-                  onClick={handleRegister}
-                  sx={{ height: "50px", width: "53%" }}
-                  onKeyPress={(e) => e.key === "Enter"}
-                >
-                  Sign Up
-                </Button>
+                    Sign Up
+                  </Button>
+                </Box>
               </>
             )}
 

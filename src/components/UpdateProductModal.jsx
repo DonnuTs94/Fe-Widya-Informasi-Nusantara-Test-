@@ -62,7 +62,7 @@ const UpdateProductModal = ({ open, handleClose, product, refetch }) => {
       setToastStatus("success")
       setOpenToast(true)
     } catch (err) {
-      console.error("Update Error:", err)
+      console.log(err)
     }
   }
 

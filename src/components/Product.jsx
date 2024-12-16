@@ -68,7 +68,7 @@ const Product = () => {
 
   const handleSearchSubmit = () => {
     dispatch(setSearchQuery(searchTerm))
-    dispatch(fetchProducts({ searchQuery: searchTerm, page: 1, pageSize: 7 })) // Fetch products with search term
+    dispatch(fetchProducts({ searchQuery: searchTerm, page: 1, pageSize: 7 }))
   }
 
   useEffect(() => {
