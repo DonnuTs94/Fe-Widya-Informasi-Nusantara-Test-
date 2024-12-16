@@ -247,7 +247,6 @@ const CreateProductModal = ({ openModal, handleCloseModal, refetch }) => {
             </Button>
             <Button
               sx={{ width: "50%" }}
-              // color="success"
               variant="contained"
               type="submit"
               onClick={handleSubmit}

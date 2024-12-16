@@ -104,10 +104,6 @@ const DetailProductModal = ({ open, handleClose, product }) => {
                 />
               </Typography>
             </Box>
-
-            {/* <Typography variant="body2" sx={{ color: "text.secondary", mt: 1 }}>
-              Created At: {new Date(product.createdAt).toLocaleDateString()}
-            </Typography> */}
           </Box>
         </Box>
       </DialogContent>

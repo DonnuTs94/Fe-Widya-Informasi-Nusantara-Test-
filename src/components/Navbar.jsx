@@ -10,9 +10,11 @@ import { useState } from "react"
 import { FaRegUser, FaUser } from "react-icons/fa"
 import { MdLogout } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
+import UserDetailModal from "./UserDetailModal"
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null)
+  const [openProfileModal, setOpenProfileModal] = useState(false)
 
   const navigate = useNavigate()
 
@@ -59,6 +61,10 @@ const Navbar = () => {
             </IconButton>
           </Box>
         </Box>
+        <UserDetailModal
+          open={openProfileModal}
+          handleClose={() => setOpenProfileModal(false)}
+        />
       </Box>
 
       <Menu
@@ -67,7 +73,10 @@ const Navbar = () => {
         onClose={handleClose}
         onClick={handleClose}
       >
-        <MenuItem sx={{ gap: "20px", px: "20px" }}>
+        <MenuItem
+          onClick={() => setOpenProfileModal(true)}
+          sx={{ gap: "20px", px: "20px" }}
+        >
           <FaRegUser /> My Account
         </MenuItem>
         <Divider />

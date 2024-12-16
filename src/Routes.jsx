@@ -6,16 +6,14 @@ import ProtectedRoute from "./components/ProtectedRoute"
 const AppRouter = () => {
   return (
     <>
-      <main>
-        <Routes>
-          <Route path="/auth" element={<Auth />} />
-          <Route element={<ProtectedRoute />}>
-            <Route index path="/" element={<Admin />} />
-          </Route>
+      <Routes>
+        <Route path="/auth" element={<Auth />} />
+        <Route element={<ProtectedRoute />}>
+          <Route index path="/" element={<Admin />} />
+        </Route>
 
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </main>
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
     </>
   )
 }
