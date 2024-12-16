@@ -15,10 +15,10 @@ import { HiDotsVertical } from "react-icons/hi"
 import CreateProductModal from "./CreateProductModal"
 import DetailProductModal from "./DetailProductModal"
 import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md"
+import DeleteConfirmationModal from "./DeleteConfirmationModal"
 
 const Product = () => {
   const [products, setProducts] = useState([])
-  // const [page, setPage] = useState(1)
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
     pageSize: 5,
@@ -30,11 +30,16 @@ const Product = () => {
   const [openDetailModal, setOpenDetailModal] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(null)
 
+  const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
+    useState(false)
+
   const [anchorEl, setAnchorEl] = useState(null)
 
   const open = Boolean(anchorEl)
-  const handleOpenMenu = (event) => {
+
+  const handleOpenMenu = (event, product) => {
     setAnchorEl(event.currentTarget)
+    setSelectedProduct(product)
   }
   const handleCloseMenu = () => {
     setAnchorEl(null)
@@ -54,7 +59,7 @@ const Product = () => {
       setPageSize(response.data.pageSize)
       setTotalData(response.data.totalItems)
 
-      console.log(response)
+      // console.log(response)
     } catch (err) {
       console.log(err)
     }
@@ -71,6 +76,8 @@ const Product = () => {
   const handleCloseModal = () => {
     setOpenModal(false)
   }
+
+  console.log(selectedProduct)
 
   const columns = [
     {
@@ -106,6 +113,30 @@ const Product = () => {
           >
             <HiDotsVertical />
           </IconButton>
+
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleCloseMenu}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuItem onClick={handleCloseMenu} sx={{ gap: 2 }}>
+              <MdOutlineEdit /> Edit
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                handleCloseMenu()
+                setOpenDeleteConfirmationModal(true)
+              }}
+              sx={{ gap: 2 }}
+            >
+              <MdOutlineDelete />
+              Delete
+            </MenuItem>
+          </Menu>
         </>
       ),
     },
@@ -186,23 +217,12 @@ const Product = () => {
           product={selectedProduct}
         />
 
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleCloseMenu}
-          MenuListProps={{
-            "aria-labelledby": "basic-button",
-          }}
-        >
-          <MenuItem onClick={handleCloseMenu} sx={{ gap: 2 }}>
-            <MdOutlineEdit /> Edit
-          </MenuItem>
-          <MenuItem onClick={handleCloseMenu} sx={{ gap: 2 }}>
-            <MdOutlineDelete />
-            Delete
-          </MenuItem>
-        </Menu>
+        <DeleteConfirmationModal
+          open={openDeleteConfirmationModal}
+          handleClose={() => setOpenDeleteConfirmationModal(false)}
+          product={selectedProduct}
+          refetch={getProductData}
+        />
       </Box>
     </>
   )
