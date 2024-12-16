@@ -41,7 +41,7 @@ const Navbar = () => {
           bgcolor: "#25293c",
           height: "7vh",
           px: "30px",
-          width: "screen",
+          width: "97.8%",
         }}
       >
         <Box sx={{ cursor: "pointer", color: "white" }}>

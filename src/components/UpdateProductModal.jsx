@@ -8,12 +8,13 @@ import {
   DialogTitle,
   Divider,
   IconButton,
+  Input,
   TextField,
   Typography,
 } from "@mui/material"
 import { IoMdClose } from "react-icons/io"
 import ReactQuill from "react-quill"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import "react-quill/dist/quill.snow.css"
 import axiosInstance from "../configs/api"
 
@@ -21,6 +22,23 @@ const UpdateProductModal = ({ open, handleClose, product, refetch }) => {
   const [price, setPrice] = useState("")
   const [quantity, setQuantity] = useState("")
   const [description, setDescription] = useState("")
+  // const [newImage, setNewImage] = useState(null)
+
+  const inputFile = useRef()
+
+  const updateImageProduct = async (file) => {
+    try {
+      const imageToSend = new FormData()
+      imageToSend.append("image", file)
+
+      await axiosInstance.put(`product/${product.id}/image`, imageToSend)
+
+      handleClose()
+      await refetch()
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   useEffect(() => {
     if (product) {
@@ -48,12 +66,21 @@ const UpdateProductModal = ({ open, handleClose, product, refetch }) => {
         description: description,
       })
 
-      console.log("Update Success")
       handleClose()
       refetch()
     } catch (err) {
       console.error("Update Error:", err)
     }
+  }
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    // setNewImage(file)
+    updateImageProduct(file)
+  }
+
+  const handleImageClick = () => {
+    inputFile.current.click()
   }
 
   if (!product) {
@@ -91,16 +118,47 @@ const UpdateProductModal = ({ open, handleClose, product, refetch }) => {
               alignItems: "center",
               borderRadius: "8px",
               overflow: "hidden",
+              position: "relative",
+              flexDirection: "column",
             }}
           >
             <Box
               component="img"
               src={`http://localhost:8000/public/${product.image}`}
               alt="Product"
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              sx={{
+                width: "100%",
+                height: "95%",
+                objectFit: "cover",
+                position: "relative",
+                bottom: 30,
+                cursor: "pointer",
+              }}
+              onClick={handleImageClick}
             />
-          </Box>
 
+            <Button
+              component="label"
+              variant="outlined"
+              sx={{
+                color: "black",
+                border: "none",
+                display: "none",
+              }}
+              ref={inputFile}
+            >
+              <Input
+                type="file"
+                sx={{ display: "none" }}
+                required
+                onChange={handleFileChange}
+              />
+            </Button>
+
+            <Typography sx={{ bottom: 15, position: "relative" }}>
+              Click on the image to replace the current one.
+            </Typography>
+          </Box>
           <Box
             sx={{
               display: "flex",

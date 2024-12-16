@@ -167,10 +167,11 @@ const CreateProductModal = ({ openModal, handleCloseModal, refetch }) => {
               value={formData.category}
               onChange={handleChange}
             >
-              <MenuItem value="PRODUCT_A">Product A</MenuItem>
-              <MenuItem value="PRODUCT_B">Product B</MenuItem>
-              <MenuItem value="PRODUCT_C">Product C</MenuItem>
-              <MenuItem value="PRODUCT_D">Product D</MenuItem>
+              <MenuItem value="TSHIRTS">T-Shirts</MenuItem>
+              <MenuItem value="JEANS">Jeans</MenuItem>
+              <MenuItem value="JACKETS">Jackets</MenuItem>
+              <MenuItem value="SHOES">Shoes</MenuItem>
+              <MenuItem value="ACCESSORIES">Accessories</MenuItem>
             </Select>
           </FormControl>
         </Box>
@@ -208,7 +209,7 @@ const CreateProductModal = ({ openModal, handleCloseModal, refetch }) => {
             Upload file
             <Input
               type="file"
-              inputProps={{ multiple: true }}
+              // inputProps={{ multiple: true }}
               sx={{ display: "none" }}
               ref={inputFileRef}
               required

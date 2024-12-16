@@ -1,6 +1,7 @@
 import { Box } from "@mui/material"
 import Navbar from "../components/Navbar"
 import Product from "../components/Product"
+import Footer from "../components/Footer"
 
 const Admin = () => {
   return (
@@ -22,6 +23,7 @@ const Admin = () => {
           >
             <Product />
           </Box>
+          <Footer />
         </Box>
       </Box>
     </>
