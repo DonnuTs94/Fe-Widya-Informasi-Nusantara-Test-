@@ -16,6 +16,7 @@ import CreateProductModal from "./CreateProductModal"
 import DetailProductModal from "./DetailProductModal"
 import { MdOutlineDelete, MdOutlineEdit } from "react-icons/md"
 import DeleteConfirmationModal from "./DeleteConfirmationModal"
+import UpdateProductModal from "./updateProductModal"
 
 const Product = () => {
   const [products, setProducts] = useState([])
@@ -26,14 +27,12 @@ const Product = () => {
   const [pageSize, setPageSize] = useState(null)
   const [totalData, setTotalData] = useState(0)
   const [openModal, setOpenModal] = useState(false)
-
   const [openDetailModal, setOpenDetailModal] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState(null)
-
   const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
     useState(false)
-
   const [anchorEl, setAnchorEl] = useState(null)
+  const [openEditProductModal, setOpenEditProductModal] = useState(false)
 
   const open = Boolean(anchorEl)
 
@@ -50,6 +49,14 @@ const Product = () => {
     setOpenDetailModal(true)
   }
 
+  const handleOpenModal = () => {
+    setOpenModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setOpenModal(false)
+  }
+
   const getProductData = async () => {
     try {
       const response = await axiosInstance.get(
@@ -58,8 +65,6 @@ const Product = () => {
       setProducts(response.data.data)
       setPageSize(response.data.pageSize)
       setTotalData(response.data.totalItems)
-
-      // console.log(response)
     } catch (err) {
       console.log(err)
     }
@@ -69,21 +74,14 @@ const Product = () => {
     getProductData()
   }, [paginationModel])
 
-  const handleOpenModal = () => {
-    setOpenModal(true)
-  }
-
-  const handleCloseModal = () => {
-    setOpenModal(false)
-  }
-
-  console.log(selectedProduct)
+  // console.log(selectedProduct)
 
   const columns = [
     {
       field: "image",
       headerName: "",
       width: 80,
+      sortable: false,
       renderCell: (params) => (
         <Avatar
           variant="rounded"
@@ -123,7 +121,13 @@ const Product = () => {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={handleCloseMenu} sx={{ gap: 2 }}>
+            <MenuItem
+              onClick={() => {
+                handleCloseMenu()
+                setOpenEditProductModal(true)
+              }}
+              sx={{ gap: 2 }}
+            >
               <MdOutlineEdit /> Edit
             </MenuItem>
             <MenuItem
@@ -190,14 +194,6 @@ const Product = () => {
               pageSize={pageSize}
               rowCount={totalData}
               paginationMode="server"
-              // onPageChange={(newPage) => {
-              //   console.log("New Page Index:", newPage) // Debug
-              //   setPage(newPage + 1) // Convert zero-based index to one-based index
-              // }}
-              // onPageSizeChange={(newSize) => {
-              //   console.log("Page Size Changed:", newSize) // Debug
-              //   setPageSize(newSize)
-              // }}
               onPaginationModelChange={setPaginationModel}
               autoPageSize
               onRowClick={handleRowClick}
@@ -220,6 +216,13 @@ const Product = () => {
         <DeleteConfirmationModal
           open={openDeleteConfirmationModal}
           handleClose={() => setOpenDeleteConfirmationModal(false)}
+          product={selectedProduct}
+          refetch={getProductData}
+        />
+
+        <UpdateProductModal
+          open={openEditProductModal}
+          handleClose={() => setOpenEditProductModal(false)}
           product={selectedProduct}
           refetch={getProductData}
         />

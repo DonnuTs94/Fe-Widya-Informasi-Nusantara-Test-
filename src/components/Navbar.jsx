@@ -11,15 +11,24 @@ import { useState } from "react"
 import { FaRegUser, FaUser } from "react-icons/fa"
 import { IoSearch } from "react-icons/io5"
 import { MdLogout } from "react-icons/md"
+import { useNavigate } from "react-router-dom"
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null)
+
+  const navigate = useNavigate()
+
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
   }
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem("auth_token")
+    navigate("/auth")
   }
 
   return (
@@ -87,7 +96,7 @@ const Navbar = () => {
           <FaRegUser /> My Account
         </MenuItem>
         <Divider />
-        <MenuItem sx={{ gap: "20px", px: "20px" }}>
+        <MenuItem onClick={handleLogout} sx={{ gap: "20px", px: "20px" }}>
           <MdLogout /> Logout
         </MenuItem>
       </Menu>

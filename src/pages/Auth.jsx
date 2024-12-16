@@ -72,7 +72,11 @@ const Auth = () => {
       setToastStatus("error")
       setOpenToast(true)
 
-      console.log(err)
+      if (err.response.data.status === 401) {
+        setToastMessage("Invalid email or password")
+        setToastStatus("error")
+        setOpenToast(true)
+      }
     }
   }
 

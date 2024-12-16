@@ -17,7 +17,7 @@ import {
 import { IoMdClose } from "react-icons/io"
 import { MdOutlineFileUpload } from "react-icons/md"
 import ReactQuill from "react-quill" // Make sure to install react-quill if you haven't
-import "react-quill/dist/quill.snow.css" // For Quill editor styling
+import "react-quill/dist/quill.snow.css"
 import axiosInstance from "../configs/api"
 
 const CreateProductModal = ({ openModal, handleCloseModal, refetch }) => {
